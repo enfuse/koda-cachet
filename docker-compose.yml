@@ -11,14 +11,17 @@ services:
       - POSTGRES_DB=${DB_DATABASE}
     restart: always
     networks:
-      net:
-        ipv4_address: 172.0.3.3
+      - net
+#      net:
+#        ipv4_address: 172.0.3.3
 
   cachet:
     build:
       context: ./cachet
       args:
         - cachet_ver=2.4
+    ports:
+      - 80:8000
     environment:
       - APP_URL=172.0.3.2:8000
       - APP_KEY=${APP_KEY:-null}
@@ -44,8 +47,9 @@ services:
       - db
     restart: on-failure
     networks:
-      net:
-        ipv4_address: 172.0.3.2
+      - net
+#      net:
+#        ipv4_address: 172.0.3.2
 
   monitor:
     build:
@@ -59,13 +63,14 @@ services:
       - cachet
     restart: on-failure
     networks:
-      net:
-        ipv4_address: 172.0.3.4
+      - net
+#      net:
+#        ipv4_address: 172.0.3.4
 
 networks:
   net:
     driver: bridge
-    ipam:  # IP Adress Management, to have static IP
-      driver: default
-      config:
-        - subnet: 172.0.3.0/24
+#    ipam:  # IP Adress Management, to have static IP
+#      driver: default
+#      config:
+#        - subnet: 172.0.3.0/24
