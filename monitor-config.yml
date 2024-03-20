@@ -1,6 +1,7 @@
 endpoints:
   - name: Wikipedie
-    url: https://fr.wikipedia.org
+#    url: https://fr.wikipedia.org
+    url: https://fr.wikipediafail.org
     method: GET
     header:
       SOME-HEADER: SOME-VALUE
@@ -15,12 +16,20 @@ endpoints:
     metric_id: 1
     action:
       - UPDATE_STATUS
+      - CREATE_INCIDENT
       - PUSH_METRICS
     public_incidents: true
     latency_unit: ms
     frequency: 60 # in seconds
 cachet:
-  api_url: http://172.0.3.2:8000/api/v1
+#  api_url: http://172.0.3.2:8000/api/v1
+  api_url: http://cachet:8000/api/v1
   token:
     - type: TOKEN
-      value: my_token
+      value: jqu4pVHLuCsFu4qFLyZQ
+#    - type: ENVIRONMENT_VARIABLE
+#      value: CACHET_TOKEN
+#    - type: AWS_SECRETS_MANAGER
+#      secret_name: cachethq
+#      secret_key: token
+#      region: us-west-2

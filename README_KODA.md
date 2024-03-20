@@ -26,7 +26,7 @@ environment:
   - APP_DEBUG=true
 ```
 
-### Create an api key for the php server
+### Create the `APP_KEY` for the php server
 
 ```sh 
 # open terminal in the cachet php container 
@@ -54,6 +54,16 @@ rm -rf bootstrap/cache/*
 environment:
   - APP_KEY=base64:generated_key_here
 ```
+
+### Create the cachet admin
+when you navigate to [localhost:80/dashboard] you'll need to fill some setup forms. 
+
+the first page has you select drivers. since you have a postgres database, select database for them
+
+the second is the admin account. here are some recommended values:
+- username: koda_cachet
+- password: koda-cachet-123
+- email: kodacachet@gmail.com (this is a real email - see [Email notifications](#email-notifications) below )
 
 ### Send a notification
 1. Get `API_TOKEN` token from [http://localhost/dashboard/user](http://localhost/dashboard/user)

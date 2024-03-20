@@ -23,26 +23,33 @@ services:
     ports:
       - 80:8000
     environment:
-      - APP_URL=172.0.3.2:8000
-      - APP_KEY=${APP_KEY:-null}
-      - APP_ENV=${APP_ENV:-production}
-      - APP_DEBUG=false
+#      - APP_URL=172.0.3.2:8000
+#      - APP_URL=http://cachet:8000  # Use service name as hostname
+#      - APP_KEY=${APP_KEY:-null}
+      - APP_KEY=base64:yrtegjl6ZfZsXfO9ji1Ci5HM7LPTFf/is/YZpvq6rpg=
+#      - APP_ENV=${APP_ENV:-production}
+      - APP_ENV=${APP_ENV:-nonproduction}
+      - APP_DEBUG=true
       - APP_LOG=warninglog
-      - DEBUG=false
+      - DEBUG=true
       - DB_DRIVER=pgsql
-      - DB_HOST=${DB_HOST}
+#      - DB_HOST=${DB_HOST}
+      - DB_HOST=db # todo try changing back to ${DB_HOST} because 'db' might be the default
       - DB_PORT=${DB_PORT}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=${DB_DATABASE}
       - DB_PREFIX=${DB_PREFIX}
-      - MAIL_DRIVER=${MAIL_DRIVER}
-      - MAIL_HOST=${MAIL_HOST}
-      - MAIL_PORT=${MAIL_PORT}
-      - MAIL_USERNAME=${MAIL_USERNAME}
-      - MAIL_PASSWORD=${MAIL_PASSWORD}
-      - MAIL_ADDRESS=${MAIL_ADDRESS}
+      - FORCE_MIGRATION=true # todo try changing back to false (default)
+      - MAIL_DRIVER=smtp
+      - MAIL_HOST=smtp.mailgun.org
+      - MAIL_PORT=587
+      - MAIL_USERNAME=postmaster@sandbox07b2a18fdb9b4815b0685c0afc66c0ab.mailgun.org
+      - MAIL_PASSWORD=fcebd27a2c6b097c30c26ef1bcba3eae-309b0ef4-3c57e905
+      - MAIL_ADDRESS=kodacachet@gmail.com
       - MAIL_ENCRYPTION=${MAIL_ENCRYPTION}
+      - CACHE_DRIVER=database
+      - QUEUE_DRIVER=database
     depends_on:
       - db
     restart: on-failure
@@ -56,7 +63,8 @@ services:
       context: ./cachet-url-monitor
     image: cachet-url-monitor
     environment:
-      - CACHET_DEV=false
+#      - CACHET_DEV=false
+      - CACHET_DEV=true
     volumes:
       - ./monitor-config.yml:/usr/src/app/config/config.yml
     depends_on:
