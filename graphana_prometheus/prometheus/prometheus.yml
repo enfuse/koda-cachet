@@ -1,0 +1,22 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['docker-exporter:9104']
+
+  - job_name: 'sidekick_api'
+    static_configs:
+      - targets: ['api:25000']
+
+  - job_name: 'mediamtx'
+    static_configs:
+      - targets: [ 'mediamtx:9998' ] 
+    basic_auth:
+      username: user
+      password: password

@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - koda_sidekick_koda_network
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./graphana/provisioning:/etc/grafana/provisioning/
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: your_admin_password_here
+      GF_AUTH_DISABLE_LOGIN_FORM: false
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    networks:
+      - koda_sidekick_koda_network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  docker-exporter:
+    image: prom/container-exporter:latest
+    ports:
+      - "9104:9104"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - koda_sidekick_koda_network
+
+networks:
+  koda_sidekick_koda_network:
+    external: true
+
+volumes:
+  grafana_data:
+  prometheus_data:
+
